@@ -47,7 +47,8 @@ var site = require('apostrophe-site')({
       { name: 'home', label: 'Home Page' },
       { name: 'blog', label: 'Blog' },
       { name: 'map', label: 'Map' },
-      { name: 'sections', label: 'Sections' }
+      { name: 'sections', label: 'Sections' },
+			{ name: 'snippets', label: 'Snippets' },
     ]
   },
 
@@ -61,6 +62,26 @@ var site = require('apostrophe-site')({
     'apostrophe-people': { },
     'apostrophe-groups': { },
 		'apostrophe-snippets': { },
+		'stories': {
+		    extend: 'apostrophe-snippets',
+		    name: 'stories',
+		    label: 'Stories',
+		    instance: 'story',
+		    instanceLabel: 'Story',
+		    addFields: [
+		      {
+		        name: 'year',
+		        type: 'integer',
+		        label: 'Year',
+		        def: '2013'
+		      },
+		      {
+		        name: 'publisher',
+		        type: 'string',
+		        label: 'Publisher',
+		      }
+		    ]
+		  }
     // Our experimental but rapidly maturing new editor
     // 'apostrophe-editor-2': { }
   },
