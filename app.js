@@ -2,9 +2,9 @@ var site = require('apostrophe-site')({
 
   // This line is required and allows apostrophe-site to use require() and manage our NPM modules for us.
   root: module,
-  shortName: 'apostrophe-sandbox',
-  hostName: 'apostrophe-sandbox',
-  title: 'Apostrophe Sandbox',
+  shortName: 'OpenMarket',
+  hostName: 'OpenMarket',
+  title: 'OpenMarket',
   sessionSecret: 'apostrophe sandbox demo party',
   adminPassword: 'demo',
 
