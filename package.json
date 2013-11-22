@@ -1,7 +1,7 @@
 {
-  "name": "the-new-sandbox",
+  "name": "OpenMarket",
   "version": "0.4.0",
-  "description": "Sandbox site featuring typical Apostrophe features",
+  "description": "Ghost theme gallery",
   "main": "app.js",
   "scripts": {
     "start": "node app.js"
@@ -10,8 +10,8 @@
     "type": "git",
     "url": ""
   },
-  "author": "P'unk Avenue",
-  "license": "BSD",
+  "author": "Pathos Labs",
+  "license": "Copyright Pathos Labs",
   "dependencies": {
     "appy": "0.x",
     "uploadfs": "0.x",
