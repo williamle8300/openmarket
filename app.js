@@ -60,6 +60,7 @@ var site = require('apostrophe-site')({
     'apostrophe-sections': { },
     'apostrophe-people': { },
     'apostrophe-groups': { },
+		'apostrophe-snippets': { },
     // Our experimental but rapidly maturing new editor
     // 'apostrophe-editor-2': { }
   },
