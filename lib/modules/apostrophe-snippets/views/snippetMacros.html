@@ -1,0 +1,244 @@
+{% include 'formMacros.html' %}
+{% include 'pagerMacros.html' %}
+
+{% macro renderSnippets(items, pageUrl) %}
+  {% if items %}
+    {% for item in items %}
+      {{ renderSnippet(item, pageUrl) }}
+    {% endfor %}
+  {% else %}
+    <h4>There are no snippets yet.</h4>
+  {% endif %}
+{% endmacro %}
+
+{% macro renderSnippet(item, pageUrl) %}
+  <div class="apos-snippet">
+    {% if not item.hideTitle %}
+      <h4>
+        {% if item.url %}
+          <a href="{{ item.url }}">
+        {% endif %}
+        {{ item.title | e }}
+        {% if item.url %}
+          </a>
+        {% endif %}
+      </h4>
+    {% endif %}
+    {{ aposArea({ area: item.areas.body }) }}
+  </div>
+{% endmacro %}
+
+{% macro snippetText(name, label, options = {}) %}
+  {{ formText(name, label, options) }}
+{% endmacro %}
+
+{% macro snippetEmail(name, label) %}
+  {{ formEmail(name, label) }}
+{% endmacro %}
+
+{% macro snippetPassword(name, label) %}
+  {{ formPassword(name, label) }}
+{% endmacro %}
+
+{# Less ambiguous to work with than a checkbox #}
+{% macro snippetBoolean(name, label) %}
+  {{ formBoolean(name, label) }}
+{% endmacro %}
+
+{% macro snippetTags(name, label) %}
+  {{ formTags(name, label) }}
+{% endmacro %}
+
+{% macro snippetTextarea(name, label) %}
+  {{ formTextarea(name, label) }}
+{% endmacro %}
+
+{% macro snippetSelect(name, label, choices) %}
+{{ formSelect(name, label, choices) }}
+  </fieldset>
+{% endmacro %}
+
+{# See enableArea in snippets' main.js for the necessary plumbing, including #}
+{# specifying the type we want for the singleton #}
+{% macro snippetSingleton(name, label) %}
+  {{ formSingleton(name, label) }}
+{% endmacro %}
+
+{# See enableArea in snippets' main.js for the necessary plumbing #}
+{% macro snippetArea(name, label) %}
+  {{ formArea(name, label) }}
+{% endmacro %}
+
+{# A pill button with several mutually exclusive choices #}
+{% macro snippetPill(name, label, options) %}
+  {{ formPill(name, label, options) }}
+{% endmacro %}
+
+{# Just the pill button group itself, no fieldset #}
+{% macro snippetPillStandalone(name, options) %}
+  {{ formPillStandalone(name, options) }}
+{% endmacro %}
+
+{# These promote a consistent interface in the various "manage" dialogs for types #}
+
+{% macro snippetNewButtons() %}
+  <div class="apos-modal-footer">
+    <a href="#" data-action="save" data-next class="apos-control apos-button apos-save apos-add-next">Add Next</a>
+    <a href="#" data-action="save" class="apos-control apos-button apos-save">Add</a>
+    <a href="#" data-action="dismiss" class="apos-control apos-button apos-cancel">Cancel</a>
+  </div>
+{% endmacro %}
+
+{% macro snippetEditButtons() %}
+  <div class="apos-modal-footer">
+    <a href="#" data-action="save" class="apos-control apos-button apos-save">Save</a>
+    <a href="#" data-action="delete" class="apos-control apos-button apos-delete">Move to Trash</a>
+    <a href="#" data-action="versions" class="apos-control apos-button apos-versions">Versions</a>
+    <a href="#" data-action="dismiss" class="apos-control apos-button apos-cancel">Cancel</a>
+  </div>
+{% endmacro %}
+
+{# See $.selective in content.js for the necessary plumbing #}
+{% macro snippetSelective(name, label, options) %}
+  {{ formSelective(name, label, options) }}
+{% endmacro %}
+
+{% macro snippetTrashFilter() %}
+  {{ snippetPillStandalone('trash',
+      [
+        {
+          value: '0',
+          label: 'Live'
+        },
+        {
+          value: '1',
+          label: 'Trash'
+        }
+      ]
+    )
+  }}
+{% endmacro %}
+
+{% macro snippetPublishedFilter() %}
+  {{
+    snippetPillStandalone('published',
+      [
+        {
+          value: '1',
+          label: 'Published'
+        },
+        {
+          value: '0',
+          label: 'Draft'
+        },
+        {
+          value: 'any',
+          label: 'Both'
+        }
+      ]
+    )
+  }}
+{% endmacro %}
+
+{% macro snippetSearchFilter() %}
+  {# In user testing we found that leaving out the submit button isn't great. #}
+  {# So if you remove it, make sure some other clickable thing is visible. -Tom #}
+  Search: <input type="text" name="search" /> <input type="submit" data-search-submit class="apos-search-submit" value="Go" /> <a href="#" class="apos-remove-search" data-remove-search>x</a>
+{% endmacro %}
+
+{# Standard filters suitable for all snippet derivatives. Does not include date filter. #}
+{# You can call the filters separately to change the order or skip or add things. #}
+
+{% macro snippetFilters() %}
+  {{ snippetTrashFilter() }}
+  {{ snippetPublishedFilter() }}
+  {{ snippetSearchFilter() }}
+{% endmacro %}
+
+{# Events and related subclasses of snippets use this one. #}
+
+{% macro snippetDateFilter() %}
+  {{
+    snippetPillStandalone('date',
+      [
+        {
+          value: 'past',
+          label: 'Past'
+        },
+        {
+          value: 'future',
+          label: 'Future'
+        },
+        {
+          value: 'all',
+          label: 'All'
+        }
+      ]
+    )
+  }}
+{% endmacro %}
+
+{# Output all the schema fields. Second argument is optional and contains options. #}
+{# If "from" is set, start with that field. #}
+{# If "to" is set, end with that field. #}
+{# You can use "from" and "to" to output a portion of the schema fields #}
+{# in order, automatically, then output one in a customized way, then resume #}
+{# outputting the rest automatically. #}
+
+{# You can also output specific fields by specifying only: [ 'field1', 'field2' ... ] #}
+{# or exclude specific fields by specifying except: [ 'field1', 'field2' ... ]. #}
+
+{# Fields are always output in the order specified at configuration time. #}
+
+{# Any field types not known to this macro are skipped, without error. #}
+
+{% macro snippetAllFields(fields, options = { from: false, to: false, except: [], only: false }) %}
+  {% set fromFound = false %}
+  {% set toFound = false %}
+  {% for field in fields %}
+    {% if (not options.from) or (field.name == options.from) %}
+      {% set fromFound = true %}
+    {% endif %}
+    {% set found = fromFound and (not toFound) %}
+    {% set notExcepted = (not aposContains(options.except, field.name)) %}
+    {% set allowed = (options.only == false) or aposContains(options.only, field.name) %}
+    {% if (found and notExcepted and allowed) %}
+      {# TODO: look into calling macros by name somehow #}
+      {% if (field.type == 'string') %}
+        {% if field.textarea %}
+          {{ snippetTextarea(field.name, field.label) }}
+        {% else %}
+          {{ snippetText(field.name, field.label) }}
+        {% endif %}
+      {% elif (field.type == 'integer') %}
+        {{ snippetText(field.name, field.label) }}
+      {% elif (field.type == 'float') %}
+        {{ snippetText(field.name, field.label) }}
+      {% elif (field.type == 'boolean') %}
+        {{ snippetBoolean(field.name, field.label) }}
+      {% elif (field.type == 'select') %}
+        {{ snippetSelect(field.name, field.label, field.choices) }}
+      {% elif (field.type == 'url') %}
+        {{ snippetText(field.name, field.label) }}
+      {% elif (field.type == 'singleton') %}
+        {{ snippetSingleton(field.name, field.label) }}
+      {% elif (field.type == 'area') %}
+        {{ snippetArea(field.name, field.label) }}
+      {% elif ((field.type == 'joinByOne') or (field.type == 'joinByArray')) %}
+        {# Note we only present fields for forward joins, reverse joins are #}
+        {# edited on the other side #}
+        {{ snippetSelective(field.name, field.label, {
+          relationship: field.relationship,
+          placeholder: field.placeholder
+        }) }}
+      {% endif %}
+      {% if field.help %}
+        <p class="apos-help">{{ field.help | e }}</p>
+      {% endif %}
+    {% endif %}
+    {% if (field.name == options.to) %}
+      {% set toFound = true %}
+    {% endif %}
+  {% endfor %}
+{% endmacro %}
+
