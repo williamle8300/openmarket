@@ -49,6 +49,7 @@ var site = require('apostrophe-site')({
       { name: 'map', label: 'Map' },
       { name: 'sections', label: 'Sections' },
 			{ name: 'snippets', label: 'Snippets' },
+			{ name: 'stories', label: 'Stories' },
     ]
   },
 
