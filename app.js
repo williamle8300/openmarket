@@ -49,7 +49,7 @@ var site = require('apostrophe-site')({
       { name: 'map', label: 'Map' },
       { name: 'sections', label: 'Sections' },
 			{ name: 'snippets', label: 'Snippets' },
-			{ name: 'stories', label: 'Stories' },
+			{ name: 'om-stories', label: 'Stories' },
     ]
   },
 
@@ -63,9 +63,9 @@ var site = require('apostrophe-site')({
     'apostrophe-people': { },
     'apostrophe-groups': { },
 		'apostrophe-snippets': { },
-		'stories': {
+		'om-stories': {
 		    extend: 'apostrophe-snippets',
-		    name: 'stories',
+		    name: 'om-stories',
 		    label: 'Stories',
 		    instance: 'story',
 		    instanceLabel: 'Story',
