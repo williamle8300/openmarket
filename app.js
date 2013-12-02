@@ -59,7 +59,7 @@ var site = require('apostrophe-site')({
     // 'apostrophe-ui-2': { },
     'apostrophe-blog':     { },
     'apostrophe-map':      { },
-    'apostrophe-sections': { },
+//    'apostrophe-sections': { },
     'apostrophe-people': { },
     'apostrophe-groups': { },
 		'apostrophe-snippets': { },
